@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Penilaian Wawancara Calon Perawat – Klinik Utama Rezeki Meurasi Mandiri</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #0a3d62;
+    --primary-light: #1a5276;
+    --accent: #16a085;
+    --accent-light: #1abc9c;
+    --gold: #d4a017;
+    --danger: #c0392b;
+    --warn: #e67e22;
+    --success: #27ae60;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --border: #ccd8e5;
+    --text: #1a2733;
+    --muted: #607a8a;
+    --section-header: #e8f0f7;
+    --note-border: #f0c060;
+    --note-bg: #fffef5;
+    --note-focus: #fffbe6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, #1a6e9e 100%);
+    color: white;
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(10,61,98,0.35);
+  }
+  .app-header .logo-circle {
+    width: 64px; height: 64px;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .app-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+  .app-header p { font-size: 0.85rem; opacity: 0.8; margin-top: 2px; }
+  .app-header .badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 1000px; margin: 30px auto; padding: 0 20px 60px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(10,61,98,0.07);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--primary);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header .icon { font-size: 1.2rem; }
+  .card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .card-header .step-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.18);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .card-body { padding: 24px; }
+
+  /* ── IDENTITAS GRID ── */
+  .identity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .identity-grid .full { grid-column: 1 / -1; }
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #fafcfe;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(22,160,133,0.12);
+    background: white;
+  }
+
+  /* ── SECTION QUESTIONS ── */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    display: block;
+  }
+
+  .question-block {
+    background: #fafcfe;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary-light);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    transition: box-shadow 0.2s;
+  }
+  .question-block:hover { box-shadow: 0 3px 14px rgba(10,61,98,0.09); }
+  .question-block:last-child { margin-bottom: 0; }
+
+  .q-number {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    width: 24px; height: 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .q-text {
+    font-weight: 600;
+    font-size: 0.93rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .expected-answer {
+    background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+    border: 1px solid #a9dfbf;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 0.84rem;
+  }
+  .expected-answer .ea-label {
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .expected-answer p { color: #1a5c45; line-height: 1.5; }
+
+  /* ── SCORE + NOTE COMBINED ROW ── */
+  .score-note-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .score-note-row .scoring-row {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ── SCORING ── */
+  .scoring-row .score-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 50px;
+  }
+  .score-buttons { display: flex; gap: 6px; }
+  .score-btn {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--muted);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .score-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+  .score-btn.active-1 { background: #e74c3c; border-color: #c0392b; color: white; }
+  .score-btn.active-2 { background: #e67e22; border-color: #d35400; color: white; }
+  .score-btn.active-3 { background: #f1c40f; border-color: #d4ac0d; color: #333; }
+  .score-btn.active-4 { background: #2ecc71; border-color: #27ae60; color: white; }
+  .score-btn.active-5 { background: #1abc9c; border-color: #16a085; color: white; }
+  .score-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-left: 4px;
+  }
+  .score-legend {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .score-legend span { display: flex; align-items: center; gap: 3px; }
+  .score-legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  /* ── PER-QUESTION NOTE FIELD ── */
+  .q-note-wrap {
+    flex: 1;
+    min-width: 200px;
+  }
+  .q-note-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #b8860b;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .q-note-input {
+    width: 100%;
+    min-height: 56px;
+    padding: 8px 11px;
+    border: 1.5px dashed var(--note-border);
+    border-radius: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--note-bg);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    line-height: 1.55;
+  }
+  .q-note-input:focus {
+    border-color: #e0a020;
+    border-style: solid;
+    background: var(--note-focus);
+    box-shadow: 0 0 0 3px rgba(224,160,32,0.12);
+  }
+  .q-note-input::placeholder {
+    color: #c8b870;
+    font-style: italic;
+    font-size: 12px;
+  }
+  .q-note-input:not(:placeholder-shown) {
+    background: #fffbec;
+    border-style: solid;
+    border-color: #d4a017;
+  }
+
+  /* ── SUMMARY / CHART SECTION ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .chart-wrapper { position: relative; height: 280px; }
+  .score-table { width: 100%; border-collapse: collapse; }
+  .score-table th {
+    background: var(--section-header);
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  .score-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 0.87rem;
+  }
+  .score-table tr:last-child td { border-bottom: none; }
+  .score-table .percent-bar {
+    height: 8px;
+    background: #e0e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    min-width: 60px;
+  }
+  .score-table .percent-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .total-row td {
+    background: linear-gradient(135deg, #e8f0f7, #d4e6f1);
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--primary);
+  }
+
+  /* ── KEPUTUSAN ── */
+  .decision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .decision-card {
+    border: 2.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.22s;
+    background: white;
+  }
+  .decision-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .decision-card .d-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .decision-card .d-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .decision-card .d-sub { font-size: 0.78rem; color: var(--muted); }
+  .decision-card.selected-lulus { border-color: var(--success); background: linear-gradient(135deg, #eafaf1, #d5f5e3); box-shadow: 0 4px 20px rgba(39,174,96,0.2); }
+  .decision-card.selected-pertimbangan { border-color: var(--warn); background: linear-gradient(135deg, #fef9e7, #fdebd0); box-shadow: 0 4px 20px rgba(230,126,34,0.2); }
+  .decision-card.selected-tidak { border-color: var(--danger); background: linear-gradient(135deg, #fdedec, #fad7d4); box-shadow: 0 4px 20px rgba(192,57,43,0.2); }
+
+  /* ── CATATAN DIREKTUR ── */
+  .notes-area {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    background: #fafcfe;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+  }
+  .notes-area:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(22,160,133,0.12); }
+
+  /* ── ACTION BUTTONS ── */
+  .action-bar { display: flex; gap: 12px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap; }
+  .btn {
+    padding: 11px 24px;
+    border-radius: 8px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .btn-reset { background: #ecf0f1; color: var(--muted); }
+  .btn-reset:hover { background: #dde4ea; }
+  .btn-print {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    box-shadow: 0 4px 14px rgba(10,61,98,0.3);
+  }
+  .btn-print:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(10,61,98,0.4); }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* ══════════════════════════════
+     PRINT STYLES
+  ══════════════════════════════ */
+  @media print {
+    @page { size: A4; margin: 12mm 16mm; }
+    body { background: white !important; }
+    .no-print { display: none !important; }
+    .container { max-width: 100%; margin: 0; padding: 0; }
+    .form-section { display: none !important; }
+    .print-result { display: block !important; }
+  }
+
+  /* ── PRINT RESULT (screen hidden) ── */
+  .print-result { display: none; }
+
+  @media print {
+    .print-result {
+      display: block;
+      font-family: 'Source Sans 3', sans-serif;
+      color: #1a2733;
+      font-size: 10.5pt;
+    }
+
+    .print-clinic-header {
+      text-align: center;
+      border-bottom: 3px double #0a3d62;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .print-clinic-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #0a3d62;
+      letter-spacing: 0.03em;
+      margin-bottom: 3px;
+    }
+    .print-clinic-sub { font-size: 8.5pt; color: #607a8a; letter-spacing: 0.07em; text-transform: uppercase; }
+    .print-doc-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #0a3d62;
+      border: 2px solid #0a3d62;
+      display: inline-block;
+      padding: 4px 18px;
+      border-radius: 4px;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .print-body {
+      display: grid;
+      grid-template-columns: 1fr 125px;
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .print-identity-table { width: 100%; border-collapse: collapse; }
+    .print-identity-table td {
+      padding: 5px 8px;
+      font-size: 9.5pt;
+      border-bottom: 1px solid #ccd8e5;
+    }
+    .print-identity-table td:first-child {
+      font-weight: 700;
+      color: #607a8a;
+      width: 40%;
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .print-photo-box {
+      border: 2px dashed #0a3d62;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #607a8a;
+      font-size: 8pt;
+      padding: 10px;
+      width: 125px;
+      height: 175px;
+      background: #f8fbff;
+    }
+    .print-photo-box .ph-icon { font-size: 20pt; margin-bottom: 5px; opacity: 0.35; }
+    .print-photo-box .ph-label { font-weight: 700; font-size: 8pt; color: #0a3d62; }
+    .print-photo-box .ph-size { font-size: 7.5pt; color: #607a8a; margin-top: 2px; }
+
+    .print-section-title {
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0a3d62;
+      margin: 12px 0 7px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #16a085;
+    }
+
+    /* Score table */
+    .print-score-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+    .print-score-table th {
+      background: #0a3d62;
+      color: white;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 5px 9px;
+      text-align: left;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .print-score-table td {
+      padding: 5px 9px;
+      border-bottom: 1px solid #e0e8f0;
+      font-size: 9pt;
+    }
+    .print-score-table tr:nth-child(even) td { background: #f5f8fc; }
+    .print-score-table .total-row td {
+      background: #e8f0f7 !important;
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #0a3d62;
+    }
+
+    /* Decision */
+    .print-decision-box {
+      border: 2.5px solid currentColor;
+      border-radius: 8px;
+      padding: 9px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .decision-lulus { color: #27ae60; border-color: #27ae60; background: #eafaf1; }
+    .decision-pertimbangan { color: #e67e22; border-color: #e67e22; background: #fef9e7; }
+    .decision-tidak { color: #c0392b; border-color: #c0392b; background: #fdedec; }
+
+    /* Director notes */
+    .print-notes-box {
+      border: 1.5px solid #ccd8e5;
+      border-radius: 6px;
+      padding: 9px 13px;
+      min-height: 60px;
+      font-size: 9.5pt;
+      background: #fafcfe;
+    }
+
+    /* Per-question notes */
+    .print-qnotes-container {
+      border: 1.5px solid #f0c060;
+      border-radius: 6px;
+      background: #fffef8;
+      padding: 0;
+      overflow: hidden;
+    }
+    .print-qnote-item {
+      display: grid;
+      grid-template-columns: 148pt 1fr;
+      gap: 10pt;
+      border-bottom: 0.75pt solid #f0e0a0;
+      padding: 5pt 10pt;
+      font-size: 8.5pt;
+      page-break-inside: avoid;
+    }
+    .print-qnote-item:last-child { border-bottom: none; }
+    .print-qnote-label {
+      font-weight: 700;
+      color: #0a3d62;
+      font-size: 8pt;
+      line-height: 1.45;
+    }
+    .print-qnote-label .qn-badge {
+      display: inline-block;
+      background: #0a3d62;
+      color: white;
+      font-size: 7pt;
+      padding: 1pt 4pt;
+      border-radius: 3pt;
+      margin-right: 4pt;
+      letter-spacing: 0.03em;
+    }
+    .print-qnote-text {
+      color: #2c3e50;
+      font-size: 8.5pt;
+      line-height: 1.5;
+    }
+
+    /* Signature row */
+    .print-sign-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 18px;
+    }
+    .print-sign-box { text-align: center; }
+    .print-sign-box .sign-label { font-size: 8.5pt; color: #607a8a; margin-bottom: 38px; }
+    .print-sign-box .sign-line { border-top: 1.5px solid #0a3d62; margin-top: 8px; }
+    .print-sign-box .sign-name { font-weight: 700; font-size: 9.5pt; color: #0a3d62; margin-top: 4px; }
+
+    /* Bar chart */
+    .print-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 8.5pt;
+    }
+    .print-bar-track { flex: 1; height: 8px; background: #e0e8f0; border-radius: 4px; overflow: hidden; }
+    .print-bar-fill { height: 100%; background: linear-gradient(90deg, #16a085, #1abc9c); border-radius: 4px; }
+    .print-bar-pct { width: 36px; text-align: right; font-weight: 700; font-size: 8pt; color: #0a3d62; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SCREEN FORM
+════════════════════════════════════════════ -->
+<div class="form-section no-print">
+
+  <div class="app-header">
+    <div class="logo-circle">🏥</div>
+    <div>
+      <h1>Klinik Utama Rezeki Meurasi Mandiri</h1>
+      <p>Formulir Penilaian Wawancara Calon Tenaga Keperawatan</p>
+    </div>
+    <div class="badge">Konfidensial</div>
+  </div>
+
+  <div class="container">
+
+    <!-- ─── IDENTITAS ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">👤</span>
+        <h2>Identitas Pelamar</h2>
+        <span class="step-badge">Data Dasar</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-grid">
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="id-nama" placeholder="Nama lengkap sesuai KTP" oninput="updatePrintIdentity()">
+          </div>
+          <div class="form-group">
+            <label>Posisi Dilamar</label>
+            <input type="text" id="id-posisi" placeholder="misal: Perawat Klinik Umum" oninput="updatePrintIdentity()">
+          </div>
+          <div class="form-group">
+            <label>Pendidikan Terakhir</label>
+            <select id="id-pendidikan" onchange="updatePrintIdentity()">
+              <option value="">— Pilih —</option>
+              <option>D3 Keperawatan</option>
+              <option>D4 Keperawatan</option>
+              <option>S1 Keperawatan</option>
+              <option>S1 Keperawatan + Ners</option>
+              <option>S2 Keperawatan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pengalaman Kerja</label>
+            <input type="text" id="id-pengalaman" placeholder="misal: 2 tahun di RS Budi Sehat" oninput="updatePrintIdentity()">
+          </div>
+          <div class="form-group">
+            <label>Tanggal Wawancara</label>
+            <input type="date" id="id-tanggal" oninput="updatePrintIdentity()">
+          </div>
+          <div class="form-group">
+            <label>Pewawancara / Direktur</label>
+            <input type="text" id="id-pewawancara" placeholder="Nama direktur / pewawancara" oninput="updatePrintIdentity()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── NOTE LEGEND ─── -->
+    <div style="background:#fffbe6;border:1px solid #f0c060;border-radius:10px;padding:12px 18px;margin-bottom:20px;font-size:0.84rem;display:flex;gap:10px;align-items:center;">
+      <span style="font-size:1.3rem;">📝</span>
+      <div>
+        <strong style="color:#92660a;">Kolom Catatan per Pertanyaan</strong> — Gunakan kolom kuning di samping skor untuk menuliskan observasi, kutipan jawaban, atau catatan khusus.
+        <span style="color:#607a8a;"> Catatan yang diisi akan <strong>otomatis tercetak</strong>; catatan yang dikosongkan akan <strong>disembunyikan</strong> dari hasil cetak.</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 1
+    ═══════════════════════════════ -->
+    <div class="card">
+      <div class="card-header" style="background: #154360;">
+        <span class="icon">📋</span>
+        <h2>Bagian 1 — Pengalaman & Latar Belakang</h2>
+        <span class="step-badge">6 Pertanyaan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">Menilai motivasi, latar belakang klinis, dan kesiapan profesional</div>
+
+        <!-- Q1-1 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">1</span>"Ceritakan tentang diri Anda dan pengalaman Anda di bidang keperawatan klinik."</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyebutkan latar belakang pendidikan, pengalaman kerja relevan (klinik/RS/puskesmas), kompetensi utama yang dimiliki, serta sikap profesional dan motivasi berkarier di keperawatan klinik. Jawaban terstruktur, percaya diri, dan ringkas (maks. 3 menit).</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-1"></div>
+              <span class="score-desc" id="desc-q1-1"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-1" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q1-2 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">2</span>"Mengapa Anda ingin bekerja sebagai perawat di klinik kami?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menunjukkan pengetahuan tentang klinik, menyampaikan keselarasan nilai pribadi dengan visi-misi klinik, serta memaparkan kontribusi nyata yang dapat diberikan. Bukan sekadar alasan umum seperti "dekat rumah" atau "gaji bagus".</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-2"></div>
+              <span class="score-desc" id="desc-q1-2"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-2" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q1-3 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">3</span>"Apa kelebihan dan kekurangan terbesar Anda dalam bekerja?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Kelebihan: spesifik dan relevan dengan keperawatan (misal: teliti, empati tinggi, cepat belajar SOP baru). Kekurangan: jujur namun disertai upaya perbaikan aktif. Menghindari kekurangan yang bersifat fatal untuk perawat.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-3"></div>
+              <span class="score-desc" id="desc-q1-3"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-3" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q1-4 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">4</span>"Apa yang Anda ketahui tentang klinik kami?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyebutkan informasi spesifik: nama klinik, layanan utama, lokasi, atau reputasi. Menunjukkan kandidat telah melakukan riset sebelum wawancara. Menandakan keseriusan dan minat tulus.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-4"></div>
+              <span class="score-desc" id="desc-q1-4"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-4" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q1-5 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">5</span>"Coba jelaskan asuhan keperawatan yang pernah Anda lakukan dari awal hingga akhir."</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Mampu menjelaskan proses SDKI–SLKI–SIKI secara sistematis: pengkajian → diagnosis keperawatan → perencanaan → implementasi → evaluasi. Menyebutkan kasus nyata dengan alur yang logis dan sesuai standar profesi.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-5"></div>
+              <span class="score-desc" id="desc-q1-5"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-5" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q1-6 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">6</span>"Apa kegiatan Anda saat ini?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Apabila sedang bekerja: menyebutkan posisi dan alasan berpindah yang positif. Apabila tidak bekerja: menyebutkan kegiatan produktif (pelatihan, volunter, studi lanjut). Menunjukkan kandidat aktif dan tidak pasif menunggu.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q1-6"></div>
+              <span class="score-desc" id="desc-q1-6"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q1-6" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-legend">
+          <span><span class="dot" style="background:#e74c3c"></span> 1 = Sangat Kurang</span>
+          <span><span class="dot" style="background:#e67e22"></span> 2 = Kurang</span>
+          <span><span class="dot" style="background:#f1c40f"></span> 3 = Cukup</span>
+          <span><span class="dot" style="background:#2ecc71"></span> 4 = Baik</span>
+          <span><span class="dot" style="background:#1abc9c"></span> 5 = Sangat Baik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 2
+    ═══════════════════════════════ -->
+    <div class="card">
+      <div class="card-header" style="background: #1a5276;">
+        <span class="icon">🩺</span>
+        <h2>Bagian 2 — Kompetensi Klinis & Teknis</h2>
+        <span class="step-badge">3 Pertanyaan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">Menilai penguasaan prosedur dan standar keperawatan</div>
+
+        <!-- Q2-1 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">1</span>"Bagaimana Anda memastikan 7 benar dalam pemberian obat?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Mampu menyebutkan 7 benar secara lengkap: benar pasien, obat, dosis, waktu, rute, dokumentasi, dan informasi. Menjelaskan langkah verifikasi praktis (double-check, identitas gelang, konfirmasi DPJP). Menunjukkan kesadaran patient safety.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q2-1"></div>
+              <span class="score-desc" id="desc-q2-1"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q2-1" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2-2 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">2</span>"Jelaskan pengalaman Anda dalam pemasangan infus, kateter, atau merawat luka."</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyebutkan langkah prosedur sesuai SOP (persiapan alat, informed consent, teknik aseptik, pelaksanaan, dokumentasi). Menceritakan pengalaman nyata termasuk tantangan yang pernah dihadapi dan cara mengatasinya. Menonjolkan prinsip sterilitas dan kenyamanan pasien.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q2-2"></div>
+              <span class="score-desc" id="desc-q2-2"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q2-2" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2-3 -->
+        <div class="question-block">
+          <div class="q-text"><span class="q-number">3</span>"Bagaimana Anda menangani pasien yang cemas atau tidak kooperatif?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menggunakan pendekatan komunikasi terapeutik: memperkenalkan diri, mendengarkan aktif, menjelaskan prosedur dengan bahasa sederhana, melibatkan keluarga jika perlu, memberikan empati dan rasa aman. Tidak bersikap memaksa. Tahu kapan harus melibatkan dokter.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q2-3"></div>
+              <span class="score-desc" id="desc-q2-3"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q2-3" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-legend">
+          <span><span class="dot" style="background:#e74c3c"></span> 1 = Sangat Kurang</span>
+          <span><span class="dot" style="background:#e67e22"></span> 2 = Kurang</span>
+          <span><span class="dot" style="background:#f1c40f"></span> 3 = Cukup</span>
+          <span><span class="dot" style="background:#2ecc71"></span> 4 = Baik</span>
+          <span><span class="dot" style="background:#1abc9c"></span> 5 = Sangat Baik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 3
+    ═══════════════════════════════ -->
+    <div class="card">
+      <div class="card-header" style="background: #6e2f1a;">
+        <span class="icon">🚨</span>
+        <h2>Bagian 3 — Skenario & Studi Kasus</h2>
+        <span class="step-badge">4 Pertanyaan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">Menilai kemampuan pengambilan keputusan dan penanganan kondisi kritis</div>
+
+        <!-- Q3-1 -->
+        <div class="question-block" style="border-left-color: #c0392b;">
+          <div class="q-text"><span class="q-number" style="background:#c0392b;">1</span>"Apa yang akan Anda lakukan jika pasien tiba-tiba mengalami henti napas?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyebutkan alur BHD/BLS dengan benar: cek respons → panggil bantuan → buka jalan napas (Head-tilt chin-lift) → cek nadi karotis → mulai RJP 30:2 → pasang AED jika tersedia → dokumentasi. Tahu kapan menghentikan RJP. Menyebutkan kode darurat klinik.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q3-1"></div>
+              <span class="score-desc" id="desc-q3-1"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q3-1" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3-2 -->
+        <div class="question-block" style="border-left-color: #c0392b;">
+          <div class="q-text"><span class="q-number" style="background:#c0392b;">2</span>"Bagaimana Anda menangani keluarga pasien yang marah atau tidak puas?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Tetap tenang, tidak terpancing emosi. Mengajak ke ruang privat, mendengarkan keluhan hingga selesai, memvalidasi perasaan. Memberikan penjelasan faktual dan empati. Melibatkan kepala ruangan/dokter jika perlu. Tidak berargumen di depan pasien lain.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q3-2"></div>
+              <span class="score-desc" id="desc-q3-2"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q3-2" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3-3 -->
+        <div class="question-block" style="border-left-color: #c0392b;">
+          <div class="q-text"><span class="q-number" style="background:#c0392b;">3</span>"Ceritakan saat Anda mengambil keputusan cepat dalam situasi tekanan tinggi."</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyampaikan kasus nyata yang spesifik (STAR: Situasi – Tugas – Aksi – Hasil). Keputusan diambil berdasarkan prioritas klinis dan SOP. Menunjukkan keberanian bertanggung jawab, melibatkan tim, dan melaporkan insiden dengan benar.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q3-3"></div>
+              <span class="score-desc" id="desc-q3-3"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q3-3" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3-4 -->
+        <div class="question-block" style="border-left-color: #c0392b;">
+          <div class="q-text"><span class="q-number" style="background:#c0392b;">4</span>"Bagaimana respons Anda jika pasien meminta diagnosis pribadi di luar wewenang?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menjelaskan dengan sopan bahwa diagnosis adalah kewenangan dokter sesuai UU No. 38 Tahun 2014 tentang Keperawatan. Menawarkan untuk menghubungkan pasien dengan dokter. Tidak memberikan diagnosis meskipun merasa tahu jawabannya. Menjaga hubungan tetap supportif.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q3-4"></div>
+              <span class="score-desc" id="desc-q3-4"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q3-4" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-legend">
+          <span><span class="dot" style="background:#e74c3c"></span> 1 = Sangat Kurang</span>
+          <span><span class="dot" style="background:#e67e22"></span> 2 = Kurang</span>
+          <span><span class="dot" style="background:#f1c40f"></span> 3 = Cukup</span>
+          <span><span class="dot" style="background:#2ecc71"></span> 4 = Baik</span>
+          <span><span class="dot" style="background:#1abc9c"></span> 5 = Sangat Baik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 4
+    ═══════════════════════════════ -->
+    <div class="card">
+      <div class="card-header" style="background: #1a5c3a;">
+        <span class="icon">🤝</span>
+        <h2>Bagian 4 — Kepribadian & Kerja Tim</h2>
+        <span class="step-badge">3 Pertanyaan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">Menilai kemampuan kolaborasi, prioritas, dan integritas profesional</div>
+
+        <!-- Q4-1 -->
+        <div class="question-block" style="border-left-color: #27ae60;">
+          <div class="q-text"><span class="q-number" style="background:#27ae60;">1</span>"Bagaimana cara Anda menjaga hubungan baik dengan rekan kerja dan dokter?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Komunikasi terbuka, saling menghormati peran profesi, aktif dalam handover dan briefing, menghindari gosip, menyampaikan perbedaan pendapat secara konstruktif melalui jalur yang tepat. Menyebutkan contoh nyata kerja tim yang positif.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q4-1"></div>
+              <span class="score-desc" id="desc-q4-1"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q4-1" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4-2 -->
+        <div class="question-block" style="border-left-color: #27ae60;">
+          <div class="q-text"><span class="q-number" style="background:#27ae60;">2</span>"Bagaimana Anda mengatur prioritas saat menangani beberapa pasien bersamaan?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menggunakan triase/prioritas klinis (life-threatening dulu). Membuat to-do list atau tanda prioritas. Mendelegasikan tindakan non-kritis kepada sejawat. Tetap berkomunikasi kepada tim. Tidak panik, bekerja sistematis.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q4-2"></div>
+              <span class="score-desc" id="desc-q4-2"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q4-2" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4-3 -->
+        <div class="question-block" style="border-left-color: #27ae60;">
+          <div class="q-text"><span class="q-number" style="background:#27ae60;">3</span>"Apa yang Anda lakukan jika melihat rekan kerja melakukan kesalahan prosedur?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menegur secara personal dan sopan (bukan di depan pasien). Jika berpotensi merugikan pasien: segera intervensi. Melaporkan kepada atasan/kepala ruangan sesuai jalur eskalasi. Mengutamakan keselamatan pasien di atas solidaritas. Mencatat insiden jika diperlukan.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q4-3"></div>
+              <span class="score-desc" id="desc-q4-3"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q4-3" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-legend">
+          <span><span class="dot" style="background:#e74c3c"></span> 1 = Sangat Kurang</span>
+          <span><span class="dot" style="background:#e67e22"></span> 2 = Kurang</span>
+          <span><span class="dot" style="background:#f1c40f"></span> 3 = Cukup</span>
+          <span><span class="dot" style="background:#2ecc71"></span> 4 = Baik</span>
+          <span><span class="dot" style="background:#1abc9c"></span> 5 = Sangat Baik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 5
+    ═══════════════════════════════ -->
+    <div class="card">
+      <div class="card-header" style="background: #4a235a;">
+        <span class="icon">🎯</span>
+        <h2>Bagian 5 — Komitmen & Visi Karier</h2>
+        <span class="step-badge">3 Pertanyaan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">Menilai orientasi jangka panjang dan kesesuaian ekspektasi</div>
+
+        <!-- Q5-1 -->
+        <div class="question-block" style="border-left-color: #8e44ad;">
+          <div class="q-text"><span class="q-number" style="background:#8e44ad;">1</span>"Di mana Anda melihat diri Anda dalam 5 tahun ke depan?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Memiliki visi yang realistis dan relevan: meningkatkan kompetensi (sertifikasi perawat klinis), berkontribusi pada pengembangan klinik, atau mengambil tanggung jawab lebih besar. Menunjukkan ambisi yang selaras dengan kebutuhan institusi, bukan hanya kepentingan pribadi.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q5-1"></div>
+              <span class="score-desc" id="desc-q5-1"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q5-1" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q5-2 -->
+        <div class="question-block" style="border-left-color: #8e44ad;">
+          <div class="q-text"><span class="q-number" style="background:#8e44ad;">2</span>"Mengapa kami harus mempekerjakan Anda di klinik ini?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menjelaskan nilai unik yang ditawarkan (hard skill + soft skill). Menghubungkan kualifikasi dengan kebutuhan spesifik klinik. Percaya diri tanpa terkesan arogan. Menunjukkan bahwa kandidat adalah solusi, bukan sekadar pencari kerja.</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q5-2"></div>
+              <span class="score-desc" id="desc-q5-2"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q5-2" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q5-3 -->
+        <div class="question-block" style="border-left-color: #8e44ad;">
+          <div class="q-text"><span class="q-number" style="background:#8e44ad;">3</span>"Berapa gaji yang Anda harapkan saat bekerja di sini?"</div>
+          <div class="expected-answer">
+            <div class="ea-label">✅ Jawaban yang Diharapkan</div>
+            <p>Menyebutkan angka yang realistis sesuai UMR/UMK dan pengalaman kerja, disertai fleksibilitas untuk berdiskusi. Tidak memasang angka terlalu rendah (kurang percaya diri) maupun terlalu tinggi tanpa dasar. Idealnya: "Saya mengharapkan kisaran Rp X–Y, namun terbuka untuk mendiskusikan paket kompensasi yang sesuai."</p>
+          </div>
+          <div class="score-note-row">
+            <div class="scoring-row">
+              <span class="score-label">Skor:</span>
+              <div class="score-buttons" id="scores-q5-3"></div>
+              <span class="score-desc" id="desc-q5-3"></span>
+            </div>
+            <div class="q-note-wrap">
+              <div class="q-note-header">📝 Catatan Pewawancara</div>
+              <textarea class="q-note-input" id="note-q5-3" placeholder="Tulis observasi, kutipan jawaban, atau catatan khusus di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-legend">
+          <span><span class="dot" style="background:#e74c3c"></span> 1 = Sangat Kurang</span>
+          <span><span class="dot" style="background:#e67e22"></span> 2 = Kurang</span>
+          <span><span class="dot" style="background:#f1c40f"></span> 3 = Cukup</span>
+          <span><span class="dot" style="background:#2ecc71"></span> 4 = Baik</span>
+          <span><span class="dot" style="background:#1abc9c"></span> 5 = Sangat Baik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── REKAPITULASI ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">📊</span>
+        <h2>Rekapitulasi Penilaian</h2>
+        <span class="step-badge">Hasil Akhir</span>
+      </div>
+      <div class="card-body">
+        <div class="summary-grid">
+          <div>
+            <table class="score-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Aspek Penilaian</th>
+                  <th style="text-align:center">Skor</th>
+                  <th style="text-align:center">Maks</th>
+                  <th style="min-width:100px">Persentase</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color:var(--primary);font-weight:700">1</td>
+                  <td>Pengalaman &amp; Latar Belakang</td>
+                  <td style="text-align:center;font-weight:700" id="sum-s1">0</td>
+                  <td style="text-align:center;color:var(--muted)">30</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-s1" style="width:0%"></div></div></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--primary);font-weight:700">2</td>
+                  <td>Kompetensi Klinis &amp; Teknis</td>
+                  <td style="text-align:center;font-weight:700" id="sum-s2">0</td>
+                  <td style="text-align:center;color:var(--muted)">15</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-s2" style="width:0%"></div></div></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--primary);font-weight:700">3</td>
+                  <td>Skenario &amp; Studi Kasus</td>
+                  <td style="text-align:center;font-weight:700" id="sum-s3">0</td>
+                  <td style="text-align:center;color:var(--muted)">20</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-s3" style="width:0%"></div></div></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--primary);font-weight:700">4</td>
+                  <td>Kepribadian &amp; Kerja Tim</td>
+                  <td style="text-align:center;font-weight:700" id="sum-s4">0</td>
+                  <td style="text-align:center;color:var(--muted)">15</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-s4" style="width:0%"></div></div></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--primary);font-weight:700">5</td>
+                  <td>Komitmen &amp; Visi Karier</td>
+                  <td style="text-align:center;font-weight:700" id="sum-s5">0</td>
+                  <td style="text-align:center;color:var(--muted)">15</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-s5" style="width:0%"></div></div></td>
+                </tr>
+                <tr class="total-row">
+                  <td colspan="2">TOTAL NILAI</td>
+                  <td style="text-align:center" id="sum-total">0</td>
+                  <td style="text-align:center">95</td>
+                  <td><div class="percent-bar"><div class="percent-fill" id="bar-total" style="width:0%;background:linear-gradient(90deg,var(--primary),var(--accent))"></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="margin-top:14px;padding:12px 16px;background:var(--section-header);border-radius:8px;font-size:0.85rem;">
+              <strong>Keterangan Nilai:</strong> &nbsp;
+              <span style="color:#c0392b">■ 0–47: Tidak Lulus</span> &nbsp;|&nbsp;
+              <span style="color:#e67e22">■ 48–66: Perlu Pertimbangan</span> &nbsp;|&nbsp;
+              <span style="color:#27ae60">■ 67–95: Lulus/Direkomendasikan</span>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrapper">
+              <canvas id="radarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── KEPUTUSAN ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">⚖️</span>
+        <h2>Keputusan Akhir Wawancara</h2>
+      </div>
+      <div class="card-body">
+        <div class="decision-grid">
+          <div class="decision-card" id="dec-lulus" onclick="setDecision('lulus')">
+            <div class="d-icon">✅</div>
+            <div class="d-title" style="color:#27ae60">LULUS / DIREKOMENDASIKAN</div>
+            <div class="d-sub">Total nilai ≥ 67 · Layak untuk diterima</div>
+          </div>
+          <div class="decision-card" id="dec-pertimbangan" onclick="setDecision('pertimbangan')">
+            <div class="d-icon">🔄</div>
+            <div class="d-title" style="color:#e67e22">PERLU PERTIMBANGAN</div>
+            <div class="d-sub">Total nilai 48–66 · Evaluasi lanjutan diperlukan</div>
+          </div>
+          <div class="decision-card" id="dec-tidak" onclick="setDecision('tidak')">
+            <div class="d-icon">❌</div>
+            <div class="d-title" style="color:#c0392b">TIDAK LULUS</div>
+            <div class="d-sub">Total nilai &lt; 48 · Tidak memenuhi kualifikasi</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:10px 16px;background:#fff8e1;border:1px solid #f9ca24;border-radius:8px;font-size:0.82rem;color:#856404;display:flex;gap:8px;align-items:center;">
+          <span>💡</span>
+          <span>Keputusan dapat dipilih secara manual oleh Direktur, atau ditentukan otomatis berdasarkan skor total.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CATATAN DIREKTUR ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">📝</span>
+        <h2>Catatan &amp; Masukan Direktur</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>Catatan Evaluasi (Kekuatan, Area Pengembangan, Observasi Khusus)</label>
+          <textarea class="notes-area" id="catatan-direktur" rows="5"
+            placeholder="Tuliskan catatan evaluasi Anda terhadap kandidat: kekuatan yang menonjol, area yang perlu dikembangkan, kesan umum selama wawancara, dan rekomendasi tindak lanjut..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ACTION BAR ─── -->
+    <div class="action-bar no-print">
+      <button class="btn btn-reset" onclick="resetForm()">🔄 Reset Formulir</button>
+      <button class="btn btn-print" onclick="printResult()">🖨️ Cetak Hasil Penilaian</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PRINT-ONLY RESULT PAGE
+════════════════════════════════════════════ -->
+<div class="print-result" id="printPage">
+
+  <!-- KLINIK HEADER -->
+  <div class="print-clinic-header">
+    <div class="print-clinic-name">🏥 Klinik Utama Rezeki Meurasi Mandiri</div>
+    <div class="print-clinic-sub">Jl. Banda Aceh – Medan KM 14 Aneuk Galong — Aceh, Indonesia</div>
+    <div><span class="print-doc-title">Formulir Hasil Penilaian Wawancara Calon Perawat</span></div>
+  </div>
+
+  <!-- IDENTITY + PHOTO -->
+  <div class="print-body">
+    <div>
+      <div class="print-section-title">Data Pelamar</div>
+      <table class="print-identity-table">
+        <tr><td>Nama Lengkap</td><td id="p-nama">—</td></tr>
+        <tr><td>Pendidikan Terakhir</td><td id="p-pendidikan">—</td></tr>
+        <tr><td>Posisi Dilamar</td><td id="p-posisi">—</td></tr>
+        <tr><td>Pengalaman Kerja</td><td id="p-pengalaman">—</td></tr>
+        <tr><td>Tanggal Wawancara</td><td id="p-tanggal">—</td></tr>
+        <tr><td>Pewawancara</td><td id="p-pewawancara">—</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="print-photo-box">
+        <div class="ph-icon">🖼️</div>
+        <div class="ph-label">FOTO PELAMAR</div>
+        <div class="ph-size">Ukuran 4 × 6 cm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE TABLE -->
+  <div class="print-section-title">Rekapitulasi Nilai Wawancara</div>
+  <table class="print-score-table">
+    <thead>
+      <tr>
+        <th width="5%">#</th>
+        <th>Aspek Penilaian</th>
+        <th width="10%" style="text-align:center">Skor</th>
+        <th width="10%" style="text-align:center">Maks</th>
+        <th width="28%">Persentase</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td>Pengalaman &amp; Latar Belakang</td>
+        <td style="text-align:center;font-weight:700" id="ps1">0</td>
+        <td style="text-align:center">30</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track"><div class="print-bar-fill" id="pbar-s1" style="width:0%"></div></div><span class="print-bar-pct" id="ppct-s1">0%</span></div></td>
+      </tr>
+      <tr>
+        <td>2</td><td>Kompetensi Klinis &amp; Teknis</td>
+        <td style="text-align:center;font-weight:700" id="ps2">0</td>
+        <td style="text-align:center">15</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track"><div class="print-bar-fill" id="pbar-s2" style="width:0%"></div></div><span class="print-bar-pct" id="ppct-s2">0%</span></div></td>
+      </tr>
+      <tr>
+        <td>3</td><td>Skenario &amp; Studi Kasus</td>
+        <td style="text-align:center;font-weight:700" id="ps3">0</td>
+        <td style="text-align:center">20</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track"><div class="print-bar-fill" id="pbar-s3" style="width:0%"></div></div><span class="print-bar-pct" id="ppct-s3">0%</span></div></td>
+      </tr>
+      <tr>
+        <td>4</td><td>Kepribadian &amp; Kerja Tim</td>
+        <td style="text-align:center;font-weight:700" id="ps4">0</td>
+        <td style="text-align:center">15</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track"><div class="print-bar-fill" id="pbar-s4" style="width:0%"></div></div><span class="print-bar-pct" id="ppct-s4">0%</span></div></td>
+      </tr>
+      <tr>
+        <td>5</td><td>Komitmen &amp; Visi Karier</td>
+        <td style="text-align:center;font-weight:700" id="ps5">0</td>
+        <td style="text-align:center">15</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track"><div class="print-bar-fill" id="pbar-s5" style="width:0%"></div></div><span class="print-bar-pct" id="ppct-s5">0%</span></div></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2">TOTAL NILAI</td>
+        <td style="text-align:center" id="p-total">0</td>
+        <td style="text-align:center">95</td>
+        <td><div class="print-bar-row" style="margin:0"><div class="print-bar-track" style="height:10px"><div class="print-bar-fill" id="pbar-total" style="width:0%;background:linear-gradient(90deg,#0a3d62,#16a085)"></div></div><span class="print-bar-pct" id="ppct-total" style="font-size:8.5pt;color:#0a3d62">0%</span></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- KEPUTUSAN -->
+  <div class="print-section-title">Keputusan Akhir</div>
+  <div id="p-decision-box">—</div>
+
+  <!-- PER-QUESTION NOTES (dynamic — hanya tampil jika ada catatan) -->
+  <div id="p-per-q-notes" style="display:none;">
+    <div class="print-section-title">Catatan Pewawancara per Pertanyaan</div>
+    <div class="print-qnotes-container" id="p-per-q-notes-content"></div>
+  </div>
+
+  <!-- CATATAN DIREKTUR -->
+  <div class="print-section-title">Catatan &amp; Masukan Direktur</div>
+  <div class="print-notes-box" id="p-catatan">—</div>
+
+  <!-- SIGNATURES -->
+  <div class="print-sign-row">
+    <div class="print-sign-box">
+      <div class="sign-label">Pelamar</div>
+      <div class="sign-line"></div>
+      <div class="sign-name" id="p-sign-nama">( _________________________ )</div>
+    </div>
+    <div class="print-sign-box">
+      <div class="sign-label">Direktur Klinik / Pewawancara</div>
+      <div class="sign-line"></div>
+      <div class="sign-name" id="p-sign-pewawancara">( _________________________ )</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+  /* ── Question label map for print notes ── */
+  const qMeta = {
+    'q1-1': { badge: 'B1/P1', label: 'Ceritakan tentang diri Anda...' },
+    'q1-2': { badge: 'B1/P2', label: 'Mengapa ingin bekerja di klinik kami?' },
+    'q1-3': { badge: 'B1/P3', label: 'Kelebihan dan kekurangan Anda?' },
+    'q1-4': { badge: 'B1/P4', label: 'Apa yang Anda ketahui tentang klinik kami?' },
+    'q1-5': { badge: 'B1/P5', label: 'Jelaskan asuhan keperawatan Anda.' },
+    'q1-6': { badge: 'B1/P6', label: 'Apa kegiatan Anda saat ini?' },
+    'q2-1': { badge: 'B2/P1', label: '7 benar dalam pemberian obat.' },
+    'q2-2': { badge: 'B2/P2', label: 'Pengalaman infus, kateter, atau rawat luka.' },
+    'q2-3': { badge: 'B2/P3', label: 'Menangani pasien cemas/tidak kooperatif.' },
+    'q3-1': { badge: 'B3/P1', label: 'Pasien mengalami henti napas — apa tindakan Anda?' },
+    'q3-2': { badge: 'B3/P2', label: 'Menangani keluarga pasien yang marah.' },
+    'q3-3': { badge: 'B3/P3', label: 'Keputusan cepat di situasi tekanan tinggi.' },
+    'q3-4': { badge: 'B3/P4', label: 'Pasien minta diagnosis di luar wewenang.' },
+    'q4-1': { badge: 'B4/P1', label: 'Menjaga hubungan dengan rekan & dokter.' },
+    'q4-2': { badge: 'B4/P2', label: 'Mengatur prioritas beberapa pasien sekaligus.' },
+    'q4-3': { badge: 'B4/P3', label: 'Rekan kerja melakukan kesalahan prosedur.' },
+    'q5-1': { badge: 'B5/P1', label: 'Visi diri dalam 5 tahun ke depan.' },
+    'q5-2': { badge: 'B5/P2', label: 'Mengapa harus mempekerjakan Anda?' },
+    'q5-3': { badge: 'B5/P3', label: 'Ekspektasi gaji.' },
+  };
+
+  /* ── Section definitions ── */
+  const sections = {
+    's1': ['q1-1','q1-2','q1-3','q1-4','q1-5','q1-6'],
+    's2': ['q2-1','q2-2','q2-3'],
+    's3': ['q3-1','q3-2','q3-3','q3-4'],
+    's4': ['q4-1','q4-2','q4-3'],
+    's5': ['q5-1','q5-2','q5-3'],
+  };
+  const maxScores = { s1:30, s2:15, s3:20, s4:15, s5:15 };
+  const scoreDescs = ['','Sangat Kurang','Kurang','Cukup','Baik','Sangat Baik'];
+  const scores = {};
+
+  /* ── Initialise score buttons ── */
+  Object.values(sections).flat().forEach(id => {
+    scores[id] = 0;
+    const wrap = document.getElementById('scores-' + id);
+    if (!wrap) return;
+    [1,2,3,4,5].forEach(v => {
+      const btn = document.createElement('button');
+      btn.className = 'score-btn';
+      btn.textContent = v;
+      btn.onclick = () => setScore(id, v);
+      wrap.appendChild(btn);
+    });
+  });
+
+  function setScore(id, val) {
+    scores[id] = val;
+    const wrap = document.getElementById('scores-' + id);
+    wrap.querySelectorAll('.score-btn').forEach((b, i) => {
+      b.className = 'score-btn' + (i + 1 === val ? ' active-' + val : '');
+    });
+    const desc = document.getElementById('desc-' + id);
+    if (desc) desc.textContent = '→ ' + scoreDescs[val];
+    updateSummary();
+  }
+
+  /* ── Radar chart ── */
+  let radarChart = null;
+  function initChart(data) {
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    if (radarChart) radarChart.destroy();
+    radarChart = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Pengalaman\n& Latar Belakang','Kompetensi\nKlinis','Skenario\nKasus','Kepribadian\n& Tim','Komitmen\n& Visi'],
+        datasets: [{
+          label: 'Persentase (%)',
+          data: data,
+          backgroundColor: 'rgba(22,160,133,0.2)',
+          borderColor: '#16a085',
+          pointBackgroundColor: '#0a3d62',
+          pointBorderColor: '#fff',
+          pointRadius: 5,
+          borderWidth: 2.5,
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            min: 0, max: 100,
+            ticks: { stepSize: 20, font: { size: 10 }, color: '#607a8a' },
+            pointLabels: { font: { size: 10, family: "'Source Sans 3', sans-serif" }, color: '#0a3d62' },
+            grid: { color: '#dde8f0' },
+            angleLines: { color: '#dde8f0' }
+          }
+        },
+        plugins: { legend: { display: false } },
+        animation: { duration: 400 }
+      }
+    });
+  }
+  initChart([0,0,0,0,0]);
+
+  /* ── Summary update ── */
+  function updateSummary() {
+    let total = 0;
+    const pcts = [];
+    Object.entries(sections).forEach(([sec, ids]) => {
+      const s = ids.reduce((a, id) => a + (scores[id] || 0), 0);
+      const mx = maxScores[sec];
+      const pct = Math.round((s / mx) * 100);
+      document.getElementById('sum-' + sec).textContent = s;
+      document.getElementById('bar-' + sec).style.width = pct + '%';
+      total += s;
+      pcts.push(pct);
+    });
+    const totalPct = Math.round((total / 95) * 100);
+    document.getElementById('sum-total').textContent = total;
+    document.getElementById('bar-total').style.width = totalPct + '%';
+    initChart(pcts);
+    if (total >= 67) autoDecision('lulus');
+    else if (total >= 48) autoDecision('pertimbangan');
+    else autoDecision('tidak');
+  }
+
+  /* ── Decision ── */
+  let currentDecision = '';
+  function setDecision(d) {
+    currentDecision = d;
+    ['lulus','pertimbangan','tidak'].forEach(x => {
+      document.getElementById('dec-' + x).className = 'decision-card' + (x === d ? ' selected-' + x : '');
+    });
+  }
+  function autoDecision(d) { setDecision(d); }
+
+  /* ── Update identity in print page ── */
+  function updatePrintIdentity() {
+    document.getElementById('p-nama').textContent       = document.getElementById('id-nama').value || '—';
+    document.getElementById('p-pendidikan').textContent = document.getElementById('id-pendidikan').value || '—';
+    document.getElementById('p-posisi').textContent     = document.getElementById('id-posisi').value || '—';
+    document.getElementById('p-pengalaman').textContent = document.getElementById('id-pengalaman').value || '—';
+    const td = document.getElementById('id-tanggal').value;
+    document.getElementById('p-tanggal').textContent    = td ? new Date(td).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+    document.getElementById('p-pewawancara').textContent= document.getElementById('id-pewawancara').value || '—';
+    const nm = document.getElementById('id-nama').value;
+    const pw = document.getElementById('id-pewawancara').value;
+    document.getElementById('p-sign-nama').textContent         = nm ? '( ' + nm + ' )' : '( _________________________ )';
+    document.getElementById('p-sign-pewawancara').textContent  = pw ? '( ' + pw + ' )' : '( _________________________ )';
+  }
+
+  /* ── Print ── */
+  function printResult() {
+    updatePrintIdentity();
+
+    // Scores
+    Object.entries(sections).forEach(([sec, ids]) => {
+      const s = ids.reduce((a, id) => a + (scores[id] || 0), 0);
+      const mx = maxScores[sec];
+      const pct = Math.round((s / mx) * 100);
+      document.getElementById('ps' + sec.slice(1)).textContent = s;
+      document.getElementById('pbar-' + sec).style.width = pct + '%';
+      document.getElementById('ppct-' + sec).textContent = pct + '%';
+    });
+    const total = Object.values(sections).flat().reduce((a, id) => a + (scores[id] || 0), 0);
+    const totalPct = Math.round((total / 95) * 100);
+    document.getElementById('p-total').textContent = total;
+    document.getElementById('pbar-total').style.width = totalPct + '%';
+    document.getElementById('ppct-total').textContent = totalPct + '%';
+
+    // Decision
+    const decLabels = {
+      lulus:         { cls: 'decision-lulus',         icon: '✅', text: 'LULUS / DIREKOMENDASIKAN' },
+      pertimbangan:  { cls: 'decision-pertimbangan',  icon: '🔄', text: 'PERLU PERTIMBANGAN' },
+      tidak:         { cls: 'decision-tidak',          icon: '❌', text: 'TIDAK LULUS' },
+    };
+    const d = decLabels[currentDecision] || decLabels['tidak'];
+    document.getElementById('p-decision-box').innerHTML =
+      `<div class="print-decision-box ${d.cls}">${d.icon} &nbsp; ${d.text} &nbsp; (Total: ${total}/95 = ${totalPct}%)</div>`;
+
+    // ── PER-QUESTION NOTES: only include those with content ──
+    let notesHTML = '';
+    Object.keys(qMeta).forEach(id => {
+      const el = document.getElementById('note-' + id);
+      const val = el ? el.value.trim() : '';
+      if (val) {
+        const m = qMeta[id];
+        notesHTML +=
+          `<div class="print-qnote-item">` +
+          `<div class="print-qnote-label"><span class="qn-badge">${m.badge}</span>${m.label}</div>` +
+          `<div class="print-qnote-text">${val.replace(/\n/g,'<br>')}</div>` +
+          `</div>`;
+      }
+    });
+    const notesSection = document.getElementById('p-per-q-notes');
+    if (notesHTML) {
+      document.getElementById('p-per-q-notes-content').innerHTML = notesHTML;
+      notesSection.style.display = 'block';
+    } else {
+      notesSection.style.display = 'none';
+    }
+
+    // Director notes
+    const catatan = document.getElementById('catatan-direktur').value.trim();
+    document.getElementById('p-catatan').textContent = catatan || '—';
+
+    window.print();
+  }
+
+  /* ── Reset ── */
+  function resetForm() {
+    if (!confirm('Reset seluruh formulir? Semua data dan catatan yang belum dicetak akan hilang.')) return;
+    Object.values(sections).flat().forEach(id => {
+      scores[id] = 0;
+      const wrap = document.getElementById('scores-' + id);
+      if (wrap) wrap.querySelectorAll('.score-btn').forEach(b => b.className = 'score-btn');
+      const desc = document.getElementById('desc-' + id);
+      if (desc) desc.textContent = '';
+      const note = document.getElementById('note-' + id);
+      if (note) note.value = '';
+    });
+    ['id-nama','id-posisi','id-pengalaman','id-tanggal','id-pewawancara'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('id-pendidikan').value = '';
+    document.getElementById('catatan-direktur').value = '';
+    currentDecision = '';
+    ['lulus','pertimbangan','tidak'].forEach(x =>
+      document.getElementById('dec-' + x).className = 'decision-card'
+    );
+    updateSummary();
+  }
+</script>
+</body>
+</html>
